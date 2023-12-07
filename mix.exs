@@ -1,32 +1,42 @@
-defmodule Openapifwdnetworks.MixProject do
+defmodule FwdClient.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :openapifwdnetworks,
+      app: :oapi_fwdnetclient,
       version: "0.1.0",
       deps: deps(),
       elixir: "~> 1.15.7",
       start_permanent: Mix.env() == :prod,
       name: "FwdClient",
-      # docs: [main: "FwdClient", extras: ["README.md"]],
-      docs: docs(),
+      docs: docs()
     ]
   end
 
   # Run "mix help compile.app" to learn about applications.
   def application do
-    [
-      extra_applications: [:logger]
-    ]
+    if Mix.env() == :prod do
+      [
+        extra_applications: [:logger]
+      ]
+    else
+      [
+        extra_applications: [:logger, :hackney]
+      ]
+    end
   end
 
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      # {:oapi_generator, "~> 0.0.8"},
+      {:ex_doc, "~> 0.29", only: :dev, runtime: false},
+      {:faker, "~> 0.15"},
+      {:jason, "~> 1.0", optional: true},
+      {:httpoison, "~> 2.2"},
       {:oapi_generator, "0.1.0-rc.3", only: :dev, runtime: false},
-      {:ex_doc, "~> 0.27", only: :dev, runtime: false},
+      {:opentelemetry_api, "~> 1.0", optional: true},
+      {:opentelemetry_semantic_conventions, "~> 0.2", optional: true},
+      {:telemetry, "~> 0.4.2 or ~> 1.0"}
     ]
   end
 
@@ -34,7 +44,7 @@ defmodule Openapifwdnetworks.MixProject do
     [
       main: "readme",
       extras: [
-        "README.md": [title: "Overview"],
+        "README.md": [title: "Overview"]
       ],
       groups_for_modules: [
         Client: [

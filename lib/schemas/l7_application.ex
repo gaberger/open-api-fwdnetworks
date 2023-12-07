@@ -1,0 +1,18 @@
+defmodule FwdClient.L7Application do
+  @moduledoc """
+  Provides struct and type for a L7Application
+  """
+  use FwdClient.Encoder
+
+  @type t :: %__MODULE__{__info__: map, id: String.t() | nil}
+
+  defstruct [:__info__, :id]
+
+  @doc false
+  @spec __fields__(atom) :: keyword
+  def __fields__(type \\ :t)
+
+  def __fields__(:t) do
+    [id: {:string, :generic}]
+  end
+end
